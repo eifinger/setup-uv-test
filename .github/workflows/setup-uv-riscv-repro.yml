@@ -1,0 +1,41 @@
+name: setup-uv riscv repro
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/setup-uv-riscv-repro.yml
+
+jobs:
+  reproduce-issue-816:
+    name: "Reproduce setup-uv issue #816 on RISC-V"
+    runs-on: "visionfive2" # RISC-V runner label from the Cloud-V / RISE CI partners setup docs
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Show runner details
+        shell: bash
+        run: |
+          set -euxo pipefail
+          uname -a
+          arch
+          getconf LONG_BIT
+          cat /etc/os-release
+          echo "RUNNER_OS=$RUNNER_OS"
+          echo "RUNNER_ARCH=$RUNNER_ARCH"
+
+      - name: Attempt setup-uv v7
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: false
+
+      - name: Verify uv installation
+        shell: bash
+        run: |
+          set -euxo pipefail
+          uv --version
