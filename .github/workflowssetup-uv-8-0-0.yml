@@ -1,0 +1,13 @@
+name: install setup-uv@v8.0.0
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  install-tag-8-0-0:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Attempt setup-uv v8.0.0
+        uses: astral-sh/setup-uv@v8.0.0
